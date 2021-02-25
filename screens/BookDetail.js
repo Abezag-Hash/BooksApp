@@ -28,9 +28,7 @@ const BookDetail = ({ route, navigation }) => {
   const [book, setBook] = React.useState(null);
 
   const [scrollViewWholeHeight, setScrollViewWholeHeight] = React.useState(1);
-  const [scrollViewVisibleHeight, setScrollViewVisibleHeight] = React.useState(
-    0
-  );
+  const [scrollViewVisibleHeight, setScrollViewVisibleHeight] = React.useState(0);
 
   const indicator = new Animated.Value(0);
 
@@ -265,30 +263,6 @@ const BookDetail = ({ route, navigation }) => {
   function renderBottomButton() {
     return (
       <View style={{ flex: 1, flexDirection: "row" }}>
-        {/* Bookmark */}
-        <TouchableOpacity
-          style={{
-            width: 60,
-            backgroundColor: COLORS.secondary,
-            marginLeft: SIZES.padding,
-            marginVertical: SIZES.base,
-            borderRadius: SIZES.radius,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onPress={() => console.log("Bookmark")}
-        >
-          <Image
-            source={icons.bookmark_icon}
-            resizeMode="contain"
-            style={{
-              width: 25,
-              height: 25,
-              tintColor: COLORS.lightGray2,
-            }}
-          />
-        </TouchableOpacity>
-
         {/* Start Reading */}
         <TouchableOpacity
           style={{
@@ -300,9 +274,9 @@ const BookDetail = ({ route, navigation }) => {
             alignItems: "center",
             justifyContent: "center",
           }}
-          onPress={() => console.log("Find Nearest")}
+          onPress={() => console.log("Find Owner")}
         >
-          <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find Nearest</Text>
+          <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find Owner</Text>
         </TouchableOpacity>
       </View>
     );

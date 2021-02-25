@@ -4,8 +4,9 @@ import {
 } from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Home } from "../screens/";
+import Login from "../screens/Login";
 import { icons, COLORS } from "../constants";
-
+import Profile from '../screens/Profile';
 const Tab = createBottomTabNavigator();
 
 const tabOptions = {
@@ -90,11 +91,11 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Notification"
-                component={Home}
+                component={Profile}
             />
             <Tab.Screen
                 name="Setting"
-                component={Home}
+                component={Login}
             />
         </Tab.Navigator>
     )

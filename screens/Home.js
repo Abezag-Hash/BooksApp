@@ -30,7 +30,6 @@ const LineDivider = () => {
 const Home = ({ navigation }) => {
   const profileData = {
     name: "Username",
-    point: 240,
   };
 
   const bookOtherWordsForHome = {
@@ -111,17 +110,18 @@ const Home = ({ navigation }) => {
       categoryName: "The Latest",
       books: [bookTheMetropolis],
     },
-    {
-      id: 3,
-      categoryName: "Coming Soon",
-      books: [bookTheTinyDragon],
-    },
   ];
 
   const [profile, setProfile] = React.useState(profileData);
   const [myBooks, setMyBooks] = React.useState(myBooksData);
   const [categories, setCategories] = React.useState(categoriesData);
   const [selectedCategory, setSelectedCategory] = React.useState(1);
+  const [searchTerm, setSearchTerm] = React.useState('');
+
+  const onChange = (e) => {
+    setSearchTerm(e?.nativeEvent?.text)
+  }
+  const onSearchClear = () => setSearchTerm('');
 
   function renderHeader(profile) {
     return (
@@ -135,68 +135,19 @@ const Home = ({ navigation }) => {
       >
         {/* Greetings */}
         <View style={{ flex: 1 }}>
-          <View style={{ marginRight: SIZES.padding }}>
+        <TouchableOpacity
+              onPress={() => navigation.navigate('Profile')}
+            >
+          <View style={{ marginRight: SIZES.padding , alignItems: "center", }}>
             <Text style={{ ...FONTS.h3, color: COLORS.white }}>
               Good Morning
             </Text>
             <Text style={{ ...FONTS.h2, color: COLORS.white }}>
               {profile.name}
-            </Text>
+            </Text>  
           </View>
+          </TouchableOpacity>
         </View>
-
-        {/* Points */}
-        <TouchableOpacity
-          style={{
-            backgroundColor: COLORS.primary,
-            height: 40,
-            paddingLeft: 3,
-            paddingRight: SIZES.radius,
-            borderRadius: 20,
-          }}
-          onPress={() => {
-            console.log("Point");
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                width: 30,
-                height: 30,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 25,
-                backgroundColor: "rgba(0,0,0,0.5)",
-              }}
-            >
-              <Image
-                source={icons.plus_icon}
-                resizeMode="contain"
-                style={{
-                  width: 20,
-                  height: 20,
-                }}
-              />
-            </View>
-
-            <Text
-              style={{
-                marginLeft: SIZES.base,
-                color: COLORS.white,
-                ...FONTS.body4,
-              }}
-            >
-              {profile.point} point
-            </Text>
-          </View>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -348,44 +299,6 @@ const Home = ({ navigation }) => {
               borderRadius: 20,
             }}
           />
-
-          {/* Book Info */}
-          <View
-            style={{
-              marginTop: SIZES.radius,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Image
-              source={icons.clock_icon}
-              style={{
-                width: 20,
-                height: 20,
-                tintColor: COLORS.lightGray,
-              }}
-            />
-            <Text
-              style={{ marginLeft: 5, ...FONTS.body4, color: COLORS.lightGray }}
-            >
-              {item.lastRead}
-            </Text>
-
-            <Image
-              source={icons.page_icon}
-              style={{
-                marginLeft: SIZES.radius,
-                width: 20,
-                height: 20,
-                tintColor: COLORS.lightGray,
-              }}
-            />
-            <Text
-              style={{ marginLeft: 5, ...FONTS.body4, color: COLORS.lightGray }}
-            >
-              {item.completion}
-            </Text>
-          </View>
         </TouchableOpacity>
       );
     };
@@ -401,21 +314,8 @@ const Home = ({ navigation }) => {
           }}
         >
           <Text style={{ ...FONTS.h3, color: COLORS.white }}>
-            Books Near You!
+            Books For You!
           </Text>
-
-          <TouchableOpacity onPress={() => console.log("See More")}>
-            <Text
-              style={{
-                ...FONTS.body4,
-                color: COLORS.lightGray,
-                alignSelf: "flex-start",
-                textDecorationLine: "underline",
-              }}
-            >
-              see more
-            </Text>
-          </TouchableOpacity>
         </View>
 
         {/* Books */}
@@ -533,24 +433,6 @@ const Home = ({ navigation }) => {
                   {item.pageNo}
                 </Text>
 
-                <Image
-                  source={icons.read_icon}
-                  resizeMode="contain"
-                  style={{
-                    width: 20,
-                    height: 20,
-                    tintColor: COLORS.lightGray,
-                  }}
-                />
-                <Text
-                  style={{
-                    ...FONTS.body4,
-                    color: COLORS.lightGray,
-                    paddingHorizontal: SIZES.radius,
-                  }}
-                >
-                  {item.readed}
-                </Text>
               </View>
 
               {/* Genre */}
@@ -609,22 +491,6 @@ const Home = ({ navigation }) => {
               </View>
             </View>
           </TouchableOpacity>
-
-          {/* Bookmark Button */}
-          <TouchableOpacity
-            style={{ position: "absolute", top: 5, right: 15 }}
-            onPress={() => console.log("Bookmark")}
-          >
-            <Image
-              source={icons.bookmark_icon}
-              resizeMode="contain"
-              style={{
-                width: 25,
-                height: 25,
-                tintColor: COLORS.lightGray,
-              }}
-            />
-          </TouchableOpacity>
         </View>
       );
     };
@@ -648,8 +514,7 @@ const Home = ({ navigation }) => {
       {/* Header Section */}
       <View style={{ height: 100 }}>{renderHeader(profile)}</View>
       {/*Search */}
-      <SearchComponent
-      />
+      <SearchComponent value={searchTerm} onChange={onChange} onSearchClear={onSearchClear}/>
       {/* Body Section */}
       <ScrollView style={{ marginTop: SIZES.radius }}>
         {/* Books Section */}
