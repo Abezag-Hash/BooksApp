@@ -103,35 +103,35 @@ class LogIn extends Component {
         }
     }
 
-    getUserData = async(email) =>
-    {
-        var item;
-        var current = {};
-        var ref = firebase.database().ref('/Users');
-        ref.once("value")
-        .then(function(snapshot) {
-            let data = snapshot.val();
-            item = Object.values(data);
-            var i;
-            for(i=0;i<item.length;i++){
+    // getUserData = async(email) =>
+    // {
+    //     var item;
+    //     var current = {};
+    //     var ref = firebase.database().ref('/Users');
+    //     ref.once("value")
+    //     .then(function(snapshot) {
+    //         let data = snapshot.val();
+    //         item = Object.values(data);
+    //         var i;
+    //         for(i=0;i<item.length;i++){
                 
-                if(item[i]['email'] === email)
-                {  
-                    current = item[i]
-                }
-            }
-        })
-        .catch((err) =>{
-            current['name'] = "Test";
-            current['email'] = "vm@gm.com";
-            current['password'] = "1234567";
-            current['phone'] = "37498238492";
-            current['about'] = "khdakua ,dajbknk sda k";
-            // this.setState({current : cur});
-            console.log(err);
-        });
-        return current;
-    }
+    //             if(item[i]['email'] === email)
+    //             {  
+    //                 current = item[i]
+    //             }
+    //         }
+    //     })
+    //     .catch((err) =>{
+    //         current['name'] = "Test";
+    //         current['email'] = "vm@gm.com";
+    //         current['password'] = "1234567";
+    //         current['phone'] = "37498238492";
+    //         current['about'] = "khdakua ,dajbknk sda k";
+    //         // this.setState({current : cur});
+    //         console.log(err);
+    //     });
+    //     return current;
+    // }
 
     renderContent() {
         
@@ -141,9 +141,9 @@ class LogIn extends Component {
             
             var email = (this.state.signEmail || this.state.loginid);
             
-            var current = this.getUserData(email);
-            console.log('Hi');
-            console.log(current);
+            // var current = this.getUserData(email);
+            // console.log('Hi');
+            // console.log(current);
             // firebase.app().database().ref('/Users').on('value', (snapshot) => {
             //     let data = snapshot.val();
             //     item = Object.values(data);
@@ -155,7 +155,6 @@ class LogIn extends Component {
                         logOut = {firebase.auth()} 
                         loggedState = {this.setState.bind(this)}
                         email = {email}
-                        user = {current}
                     >
                     </Profile>
                 </View>

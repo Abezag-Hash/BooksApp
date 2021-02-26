@@ -1,9 +1,7 @@
 import React, { Component} from 'react';
-import {View, TextInput , Button , Text , TouchableOpacity} from 'react-native';
-import {withNavigation} from 'react-navigation';
+import {View, TextInput , Button } from 'react-native';
 import { images } from "../constants";
 import firebase from 'firebase';
-import { useNavigation } from '@react-navigation/native';
 
 class LogIn extends Component{
 
@@ -53,7 +51,7 @@ class LogIn extends Component{
         const db = firebase.app().database();
         
         db.ref('/Books').push({
-            email : this.props.route.params['email'],
+            email : this.props.email,
             bookName : bookName,
             rating : rating,
             language : language,
@@ -63,9 +61,9 @@ class LogIn extends Component{
             description : description,
         });
 
-        console.log('Done');
-        console.log(this.props.route.params['email']);
-        this.props.navigation.goBack();
+        // console.log('Done');
+        // console.log(this.props.route.params['email']);
+        this.props.changeState({addBookPage : false});
 
     }
     render()  {
@@ -133,4 +131,4 @@ class LogIn extends Component{
     }
 }
 
-export default withNavigation(LogIn);
+export default LogIn;

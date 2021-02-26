@@ -7,6 +7,7 @@ import { Home } from "../screens/";
 import Login from "../screens/Login";
 import { icons, COLORS } from "../constants";
 import Profile from '../screens/Profile';
+import ListUser from '../screens/ListUsers';
 const Tab = createBottomTabNavigator();
 
 const tabOptions = {
@@ -91,7 +92,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Notification"
-                component={Profile}
+                component={ListUser}
             />
             <Tab.Screen
                 name="Setting"

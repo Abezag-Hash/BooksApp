@@ -1,4 +1,4 @@
-import React , {useState , useEffect} from "react";
+import React , { Component} from "react";
 import {
   StyleSheet,
   Text,
@@ -8,17 +8,57 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-
-import { useNavigation } from '@react-navigation/native';
-
+import _ from 'lodash';
 import { COLORS, FONTS, SIZES, icons, images } from "../constants";
+import {connect} from 'react-redux';
+import {employeesFetch} from './Actions/Actions.js';
+import AddBook from './AddBook';
 
-const HomeScreen = (props) => {
-  const navigation = useNavigation();
-  console.log("HELLO");
-  console.log(props);
-  return (
-    <SafeAreaView style={styles.container}>
+class Profile extends Component {
+  
+  state = {
+    addBookPage : false,
+  };
+
+  current = {};
+
+  componentWillMount() {
+    this.props.employeesFetch();
+    console.log('hiiii');
+    // console.log(this.props);
+    this.findCurrent(this.props.email);
+  }
+  componentWillReceiveProps(nextProps)
+  {
+      console.log('po');
+      this.findCurrent(this.props.email);
+      // console.log(nextProps);
+  }
+
+  findCurrent = (email) =>{
+    for(var i in this.props.employee)
+    {
+      if(this.props.employee[i].email == email)
+      {
+          this.current = this.props.employee[i];
+      }
+    }
+  }
+
+  renderPage(){
+    if(this.state.addBookPage)
+    {
+      return(
+        <View style = {{flex:1}}>
+          <AddBook email = {this.props.email} changeState = {this.setState.bind(this)}></AddBook>
+        </View>
+      );
+    }
+    else{
+      return (
+      
+      
+      <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
       <TouchableOpacity
           style={{
@@ -31,7 +71,8 @@ const HomeScreen = (props) => {
             alignSelf : 'flex-end'
           }}
           onPress={() => {
-            navigation.navigate('AddBook' , { email : props.user['email']});
+            this.setState({addBookPage : true})
+            // navigation.navigate('AddBook' , { email : this.props.email});
             console.log("Point");
           }}
         >
@@ -93,14 +134,14 @@ const HomeScreen = (props) => {
               { color: "#FFFFFF", fontWeight: "200", fontSize: 25 },
             ]}
           >
-            {props.user['name']}
+            {this.current['name']}
           </Text>
           <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-          {props.user['phone']}
+          {this.current['phone']}
           </Text>
           <TouchableOpacity onPress={() => {
-              props.logOut.signOut(); 
-              props.loggedState({logged : false});
+              this.props.logOut.signOut(); 
+              this.props.loggedState({logged : false});
             }}>
             <Text style={[styles.text, { color: "#AEB5BC", fontSize: 18 }]}>
                 LogOut
@@ -134,14 +175,24 @@ const HomeScreen = (props) => {
                 { color: "#ffffff", fontWeight: "300", lineHeight: 22 },
               ]}
             >
-              {props.user['about']}
+              {this.current['about']}
             </Text>
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
-  );
-};
+  </SafeAreaView>
+      )
+    }
+  }
+
+  render() {
+    return(
+      <View style = {{flex : 1}}>
+        {this.renderPage()}
+      </View>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -276,4 +327,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+
+const mapStateToProps = state =>{
+  const employee = _.map(state.employee , (val,uid) =>{
+      return {...val , uid};
+  })
+
+  return {employee};
+}
+
+export default connect(mapStateToProps , {employeesFetch})(Profile);
