@@ -1,4 +1,4 @@
-import React , { Component} from "react";
+import React, { Component } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,196 +8,193 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import _ from 'lodash';
+import _ from "lodash";
 import { COLORS, FONTS, SIZES, icons, images } from "../constants";
-import {connect} from 'react-redux';
-import {employeesFetch} from './Actions/Actions.js';
-import AddBook from './AddBook';
+import { connect } from "react-redux";
+import { employeesFetch } from "./Actions/Actions.js";
+import AddBook from "./AddBook";
+import { Avatar } from "react-native-elements";
 
 class Profile extends Component {
-  
   state = {
-    addBookPage : false,
+    addBookPage: false,
   };
 
   current = {};
 
   componentWillMount() {
     this.props.employeesFetch();
-    console.log('hiiii');
+    console.log("hiiii");
     // console.log(this.props);
     this.findCurrent(this.props.email);
   }
-  componentWillReceiveProps(nextProps)
-  {
-      console.log('po');
-      this.findCurrent(this.props.email);
-      // console.log(nextProps);
+  componentWillReceiveProps(nextProps) {
+    console.log("po");
+    this.findCurrent(this.props.email);
+    // console.log(nextProps);
   }
 
-  findCurrent = (email) =>{
-    for(var i in this.props.employee)
-    {
-      if(this.props.employee[i].email == email)
-      {
-          this.current = this.props.employee[i];
+  findCurrent = (email) => {
+    for (var i in this.props.employee) {
+      if (this.props.employee[i].email == email) {
+        this.current = this.props.employee[i];
       }
     }
-  }
+  };
 
-  renderPage(){
-    if(this.state.addBookPage)
-    {
-      return(
-        <View style = {{flex:1}}>
-          <AddBook email = {this.props.email} changeState = {this.setState.bind(this)}></AddBook>
+  renderPage() {
+    if (this.state.addBookPage) {
+      return (
+        <View style={{ flex: 1 }}>
+          <AddBook
+            email={this.props.email}
+            changeState={this.setState.bind(this)}
+          ></AddBook>
         </View>
       );
-    }
-    else{
+    } else {
       return (
-      
-      
-      <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-      <TouchableOpacity
-          style={{
-            backgroundColor: COLORS.primary,
-            height: 40,
-            paddingLeft: 3,
-            paddingRight: SIZES.radius,
-            borderRadius: 20,
-            width:120,
-            alignSelf : 'flex-end'
-          }}
-          onPress={() => {
-            this.setState({addBookPage : true})
-            // navigation.navigate('AddBook' , { email : this.props.email});
-            console.log("Point");
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <View
+        <SafeAreaView style={styles.container}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <TouchableOpacity
               style={{
-                width: 30,
-                height: 30,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 25,
-                backgroundColor: "rgba(0,0,0,0.5)",
+                backgroundColor: COLORS.primary,
+                height: 40,
+                paddingLeft: 3,
+                paddingRight: SIZES.radius,
+                borderRadius: 20,
+                width: 120,
+                alignSelf: "flex-end",
+              }}
+              onPress={() => {
+                this.setState({ addBookPage: true });
+                // navigation.navigate('AddBook' , { email : this.props.email});
+                console.log("Point");
               }}
             >
-              <Image
-                source={icons.plus_icon}
-                resizeMode="contain"
+              <View
                 style={{
-                  width: 20,
-                  height: 20,
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
+              >
+                <View
+                  style={{
+                    width: 30,
+                    height: 30,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: 25,
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                  }}
+                >
+                  <Image
+                    source={icons.plus_icon}
+                    resizeMode="contain"
+                    style={{
+                      width: 20,
+                      height: 20,
+                    }}
+                  />
+                </View>
+
+                <Text
+                  style={{
+                    marginLeft: SIZES.base,
+                    color: COLORS.white,
+                    ...FONTS.body4,
+                  }}
+                >
+                  Add book
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View style={styles.titleBar}></View>
+
+            <View style={{ alignSelf: "center" }}>
+              <Avatar
+                size="large"
+                title="UR"
+                rounded
+                overlayContainerStyle={{ backgroundColor: "grey" }}
+                onPress={() => console.log("Works!")}
+                activeOpacity={0.7}
               />
             </View>
 
-            <Text
-              style={{
-                marginLeft: SIZES.base,
-                color: COLORS.white,
-                ...FONTS.body4,
-              }}
-            >
-                Add book
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.titleBar}></View>
-
-        <View style={{ alignSelf: "center" }}>
-          <View style={styles.profileImage}>
-            <Image
-              source={require("../assets/images/underland.jpg")}
-              style={styles.image}
-              resizeMode="cover"
-            ></Image>
-          </View>
-        </View>
-
-        <View style={styles.infoContainer}>
-          <Text
-            style={[
-              styles.text,
-              { color: "#FFFFFF", fontWeight: "200", fontSize: 25 },
-            ]}
-          >
-            {this.current['name']}
-          </Text>
-          <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-          {this.current['phone']}
-          </Text>
-          <TouchableOpacity onPress={() => {
-              this.props.logOut.signOut(); 
-              this.props.loggedState({logged : false});
-            }}>
-            <Text style={[styles.text, { color: "#AEB5BC", fontSize: 18 }]}>
-                LogOut
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ marginTop: 32 }}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={styles.mediaImageContainer}>
-              <Image
-                source={require("../assets/images/the_metropolist.jpg")}
-                style={styles.image}
-                resizeMode="cover"
-              ></Image>
+            <View style={styles.infoContainer}>
+              <Text
+                style={[
+                  styles.text,
+                  { color: "#FFFFFF", fontWeight: "200", fontSize: 25 },
+                ]}
+              >
+                {this.current["name"]}
+              </Text>
+              <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
+                {this.current["phone"]}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.logOut.signOut();
+                  this.props.loggedState({ logged: false });
+                }}
+              >
+                <Text style={[styles.text, { color: "#AEB5BC", fontSize: 18 }]}>
+                  Lmao
+                </Text>
+              </TouchableOpacity>
             </View>
-            <View style={styles.mediaImageContainer}>
-              <Image
-                source={require("../assets/images/the_metropolist.jpg")}
-                style={styles.image}
-                resizeMode="cover"
-              ></Image>
+            <View style={{ marginTop: 32 }}>
+              <ScrollView showsHorizontalScrollIndicator={false}>
+                <View style={styles.mediaImageContainer}>
+                  <Image
+                    source={require("../assets/images/the_metropolist.jpg")}
+                    style={styles.image}
+                    resizeMode="cover"
+                  ></Image>
+                </View>
+                <View style={styles.mediaImageContainer}>
+                  <Image
+                    source={require("../assets/images/the_metropolist.jpg")}
+                    style={styles.image}
+                    resizeMode="cover"
+                  ></Image>
+                </View>
+              </ScrollView>
+            </View>
+            <Text style={[styles.BasicInfo, styles.recent]}>
+              Basic Information
+            </Text>
+            <View style={{ alignItems: "center" }}>
+              <View style={{ width: 350, marginTop: 10 }}>
+                <Text
+                  style={[
+                    styles.text,
+                    { color: "#ffffff", fontWeight: "300", lineHeight: 22 },
+                  ]}
+                >
+                  {this.current["about"]}
+                </Text>
+              </View>
             </View>
           </ScrollView>
-        </View>
-        <Text style={[styles.BasicInfo, styles.recent]}>Basic Information</Text>
-        <View style={{ alignItems: "center" }}>
-          <View style={{ width: 350, marginTop: 10 }}>
-            <Text
-              style={[
-                styles.text,
-                { color: "#ffffff", fontWeight: "300", lineHeight: 22 },
-              ]}
-            >
-              {this.current['about']}
-            </Text>
-          </View>
-        </View>
-      </ScrollView>
-  </SafeAreaView>
-      )
+        </SafeAreaView>
+      );
     }
   }
 
   render() {
-    return(
-      <View style = {{flex : 1}}>
-        {this.renderPage()}
-      </View>
-    )
+    return <View style={{ flex: 1 }}>{this.renderPage()}</View>;
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0080FF",
+    backgroundColor: COLORS.black,
   },
   text: {
     color: "#52575D",
@@ -276,6 +273,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: "hidden",
     marginHorizontal: 10,
+    padding: 12,
   },
   mediaCount: {
     backgroundColor: "#41444B",
@@ -327,13 +325,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = (state) => {
+  const employee = _.map(state.employee, (val, uid) => {
+    return { ...val, uid };
+  });
 
-const mapStateToProps = state =>{
-  const employee = _.map(state.employee , (val,uid) =>{
-      return {...val , uid};
-  })
+  return { employee };
+};
 
-  return {employee};
-}
-
-export default connect(mapStateToProps , {employeesFetch})(Profile);
+export default connect(mapStateToProps, { employeesFetch })(Profile);
