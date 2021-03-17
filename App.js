@@ -1,20 +1,16 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import Login from "./screens/Login";
-import LoginUI from "./screens/LoginUI";
-import RegisterUI from "./screens/RegisterUI";
-import BookProfile from "./components/ProfileFinal";
 import { BookDetail } from "./screens/";
 import Tabs from "./navigation/tabs";
 import Profile from "./screens/Profile";
+import Profile1 from "./screens/Profile1";
+import ListUsers from "./screens/ListUsers";
 import AddBook from "./screens/AddBook";
 import { Provider } from "react-redux";
-import SplashScreen from "./screens/Splash";
 import { createStore, applyMiddleware } from "redux";
 import reducers from "./screens/Reducers";
 import thunk from "redux-thunk";
-import AnimatedSplash from "react-native-animated-splash-screen";
 
 const theme = {
   ...DefaultTheme,
@@ -54,6 +50,16 @@ class App extends React.Component {
             <Stack.Screen
               name="AddBook"
               component={AddBook}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Profile1"
+              component={Profile1}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ListUsers"
+              component={ListUsers}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

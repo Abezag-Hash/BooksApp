@@ -9,9 +9,12 @@ import {
   FlatList,
 } from "react-native";
 
+import { useNavigation } from '@react-navigation/native';
+
 import { COLORS, FONTS, SIZES, icons, images } from "../constants";
 
 import { Avatar } from "react-native-elements";
+import { ShadowPropTypesIOS } from "react-native";
 
 const LineDivider = () => {
   return (
@@ -27,20 +30,11 @@ const LineDivider = () => {
   );
 };
 
-const HeaderProfile = ({ navigation }) => {
-  const profileData = {
-    name: "Username",
-    rating: 4.5,
-  };
+const HeaderProfile = (props) => {
 
-  const [profile, setProfile] = React.useState(profileData);
-
-  const onChange = (e) => {
-    setSearchTerm(e?.nativeEvent?.text);
-  };
-  const onSearchClear = () => setSearchTerm("");
-
-  function renderHeader(profile) {
+  const navigation = useNavigation();
+  console.log(navigation);
+  function renderHeader() {
     return (
       <View
         style={{
@@ -57,9 +51,19 @@ const HeaderProfile = ({ navigation }) => {
             flexDirection: "row",
           }}
         >
-          <Text style={{ ...FONTS.body4, color: COLORS.white }}> Back</Text>
+          <TouchableOpacity onPress = {() => { 
+                  props.ou1.signOut();
+                  props.ou2({ logged: false });
+                        }}>
+            <Text style={{ ...FONTS.body4, color: COLORS.white }}> LogOut </Text>
+          </TouchableOpacity >
           <Text style={{ ...FONTS.h2, color: COLORS.white }}> Profile</Text>
-          <Text style={{ ...FONTS.body4, color: COLORS.white }}> Messages</Text>
+          <TouchableOpacity onPress={()=>{
+            navigation.navigate("AddBook" , {"email" : props.data.email});
+          }}>
+            <Text style={{ ...FONTS.body4, color: COLORS.white }}> Add Book</Text>
+          </TouchableOpacity>
+          
         </View>
         <View>
           <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
@@ -73,10 +77,10 @@ const HeaderProfile = ({ navigation }) => {
                 activeOpacity={0.7}
               />
               <Text style={{ ...FONTS.h2, color: COLORS.white }}>
-                {profile.name}
+                {props.data.name}
               </Text>
               <Text style={{ ...FONTS.body4, color: COLORS.white }}>
-                Rating: 4.5
+                Phone No: {props.data.phone}
               </Text>
             </View>
           </TouchableOpacity>
@@ -88,7 +92,7 @@ const HeaderProfile = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.black }}>
       {/* Header Section */}
-      <View>{renderHeader(profile)}</View>
+      <View>{renderHeader()}</View>
     </SafeAreaView>
   );
 };

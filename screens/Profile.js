@@ -1,37 +1,48 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  SafeAreaView,
-  Image,
-  ScrollView,
-  TouchableOpacity,
 } from "react-native";
 import _ from "lodash";
-import { COLORS, FONTS, SIZES, icons, images } from "../constants";
+import { COLORS } from "../constants";
 import { connect } from "react-redux";
-import { employeesFetch } from "./Actions/Actions.js";
+import { employeesFetch, booksFetch } from "./Actions/Actions.js";
 import AddBook from "./AddBook";
-import { Avatar } from "react-native-elements";
+import ProfileFinal from "../components/ProfileFinal";
 
 class Profile extends Component {
   state = {
     addBookPage: false,
+
   };
 
   current = {};
+  books = {};
 
   componentWillMount() {
     this.props.employeesFetch();
-    console.log("hiiii");
-    // console.log(this.props);
     this.findCurrent(this.props.email);
+    this.props.booksFetch();
+    console.log(this.props.book);
+    this.books = this.props.book.filter((item) => {
+      item.email == this.props.email
+    });
+  }
+  componentDidMount() {
+    this.props.employeesFetch();
+    this.findCurrent(this.props.email);
+    this.props.booksFetch();
+    console.log(this.props.book);
+    this.books = this.props.book.filter((item) => {
+      return item.email === this.props.email;
+    });
+
   }
   componentWillReceiveProps(nextProps) {
-    console.log("po");
     this.findCurrent(this.props.email);
-    // console.log(nextProps);
+    this.books = this.props.book.filter((item) => {
+      return item.email === this.props.email;
+    });
   }
 
   findCurrent = (email) => {
@@ -43,6 +54,9 @@ class Profile extends Component {
   };
 
   renderPage() {
+    // console.log(this.props);
+    console.log(this.current);
+    console.log(this.books);
     if (this.state.addBookPage) {
       return (
         <View style={{ flex: 1 }}>
@@ -54,140 +68,18 @@ class Profile extends Component {
       );
     } else {
       return (
-        <SafeAreaView style={styles.container}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: COLORS.primary,
-                height: 40,
-                paddingLeft: 3,
-                paddingRight: SIZES.radius,
-                borderRadius: 20,
-                width: 120,
-                alignSelf: "flex-end",
-              }}
-              onPress={() => {
-                this.setState({ addBookPage: true });
-                // navigation.navigate('AddBook' , { email : this.props.email});
-                console.log("Point");
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    width: 30,
-                    height: 30,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: 25,
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                  }}
-                >
-                  <Image
-                    source={icons.plus_icon}
-                    resizeMode="contain"
-                    style={{
-                      width: 20,
-                      height: 20,
-                    }}
-                  />
-                </View>
-
-                <Text
-                  style={{
-                    marginLeft: SIZES.base,
-                    color: COLORS.white,
-                    ...FONTS.body4,
-                  }}
-                >
-                  Add book
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <View style={styles.titleBar}></View>
-
-            <View style={{ alignSelf: "center" }}>
-              <Avatar
-                size="large"
-                title="UR"
-                rounded
-                overlayContainerStyle={{ backgroundColor: "grey" }}
-                onPress={() => console.log("Works!")}
-                activeOpacity={0.7}
-              />
-            </View>
-
-            <View style={styles.infoContainer}>
-              <Text
-                style={[
-                  styles.text,
-                  { color: "#FFFFFF", fontWeight: "200", fontSize: 25 },
-                ]}
-              >
-                {this.current["name"]}
-              </Text>
-              <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-                {this.current["phone"]}
-              </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.logOut.signOut();
-                  this.props.loggedState({ logged: false });
-                }}
-              >
-                <Text style={[styles.text, { color: "#AEB5BC", fontSize: 18 }]}>
-                  Lmao
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ marginTop: 32 }}>
-              <ScrollView showsHorizontalScrollIndicator={false}>
-                <View style={styles.mediaImageContainer}>
-                  <Image
-                    source={require("../assets/images/the_metropolist.jpg")}
-                    style={styles.image}
-                    resizeMode="cover"
-                  ></Image>
-                </View>
-                <View style={styles.mediaImageContainer}>
-                  <Image
-                    source={require("../assets/images/the_metropolist.jpg")}
-                    style={styles.image}
-                    resizeMode="cover"
-                  ></Image>
-                </View>
-              </ScrollView>
-            </View>
-            <Text style={[styles.BasicInfo, styles.recent]}>
-              Basic Information
-            </Text>
-            <View style={{ alignItems: "center" }}>
-              <View style={{ width: 350, marginTop: 10 }}>
-                <Text
-                  style={[
-                    styles.text,
-                    { color: "#ffffff", fontWeight: "300", lineHeight: 22 },
-                  ]}
-                >
-                  {this.current["about"]}
-                </Text>
-              </View>
-            </View>
-          </ScrollView>
-        </SafeAreaView>
+        <ProfileFinal data={this.current} ou1={this.props.logOut} ou2={this.props.loggedState} book={this.books}></ProfileFinal>
       );
     }
   }
 
   render() {
-    return <View style={{ flex: 1 }}>{this.renderPage()}</View>;
+    return (
+      <View style={{ flex: 1 }}>
+        {/* <Text>Hi</Text> */}
+        {this.renderPage()}
+        {/* <ProfileFinal></ProfileFinal> */}
+      </View>);
   }
 }
 
@@ -326,11 +218,18 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
+  // console.log(state);
   const employee = _.map(state.employee, (val, uid) => {
     return { ...val, uid };
   });
 
-  return { employee };
+  const book = _.map(state.book, (val, uid) => {
+    return { ...val, uid };
+  });
+
+
+
+  return { employee, book };
 };
 
-export default connect(mapStateToProps, { employeesFetch })(Profile);
+export default connect(mapStateToProps, { employeesFetch, booksFetch })(Profile);

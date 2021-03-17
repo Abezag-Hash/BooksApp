@@ -8,7 +8,8 @@ import {
   ScrollView,
   Animated,
 } from "react-native";
-import { FONTS, COLORS, SIZES, icons } from "../constants";
+import { FONTS, COLORS, SIZES, icons, images } from "../constants";
+import ListUsers from "../screens/ListUsers";
 
 const LineDivider = () => {
   return (
@@ -38,10 +39,11 @@ const BookDetail = ({ route, navigation }) => {
   }, [book]);
 
   function renderBookInfoSection() {
+    book.backgroundColor = book.backgroundColor || "rgba(247,239,219,0.9)";
     return (
       <View style={{ flex: 1 }}>
         <ImageBackground
-          source={book.bookCover}
+          source={book.bookCover || images.theMetropolist}
           resizeMode="cover"
           style={{
             position: "absolute",
@@ -118,7 +120,7 @@ const BookDetail = ({ route, navigation }) => {
           style={{ flex: 5, paddingTop: SIZES.padding2, alignItems: "center" }}
         >
           <Image
-            source={book.bookCover}
+            source={book.bookCover || images.theMetropolist}
             resizeMode="contain"
             style={{
               flex: 1,
@@ -274,9 +276,9 @@ const BookDetail = ({ route, navigation }) => {
             alignItems: "center",
             justifyContent: "center",
           }}
-          onPress={() => console.log("Find Owner")}
+          onPress={() => {navigation.navigate('ListUsers' , {book : book.bookName});}}
         >
-          <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find Owner</Text>
+          <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find Owners</Text>
         </TouchableOpacity>
       </View>
     );

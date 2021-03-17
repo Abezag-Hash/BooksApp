@@ -5,9 +5,8 @@ import {
   Text,
   View,
   Image,
-  KeyboardAvoidingView,
+  TouchableOpacity
 } from "react-native";
-import Login from "../screens/Login";
 import { COLORS, FONTS, SIZES, icons, images } from "../constants";
 import LogInForm from "../components/LoginForm";
 export default class LoginUI extends Component {
@@ -28,14 +27,31 @@ export default class LoginUI extends Component {
             style={{
               ...FONTS.body3,
               color: COLORS.white,
-              paddingVertical: SIZES.padding2,
+              paddingVertical: 15,
               alignSelf: "center",
             }}
           >
             Find Books like this, and More!
           </Text>
         </View>
-        <LogInForm></LogInForm>
+        <LogInForm 
+          st = {this.props.st} 
+          setst = {this.props.setst} 
+          but = {this.props.but} 
+          >
+          </LogInForm>
+          <TouchableOpacity onPress = {()=>{this.props.setst({register : true})}}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.white,
+                // paddingVertical: SIZES.padding2,
+                alignSelf: "center",
+              }}
+            >
+              Register a new User
+            </Text>
+          </TouchableOpacity>
       </SafeAreaView>
     );
   }
@@ -48,8 +64,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 250,
-    height: 375,
+    width: 180,
+    height: 305,
     borderRadius: 10,
     alignSelf: "center",
   },

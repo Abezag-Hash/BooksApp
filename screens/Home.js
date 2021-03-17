@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   SafeAreaView,
   View,
@@ -8,29 +8,61 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-
+import firebase from 'firebase';
 import { COLORS, FONTS, SIZES, icons, images } from "../constants";
+import _ from 'lodash';
 
 import SearchComponent from "../components/search";
+const booksFetch = async(setBooksData) =>{
+  // const {currentUser} = firebase.auth();
+  if (!firebase.apps.length) {
+      firebase.initializeApp({
+      apiKey: "AIzaSyA0DXFjSgcfkfI0XFNzcxrBgKI8abnJcQo",
+      authDomain: "bookstore-7af50.firebaseapp.com",
+      projectId: "bookstore-7af50",
+      storageBucket: "bookstore-7af50.appspot.com",
+      messagingSenderId: "892232425094",
+      appId: "1:892232425094:web:74a4a4664f96e211c4bb07",
+      measurementId: "G-VQXHMY0LM7"});
+  }
+  else{
+      firebase.app();
+  }
+  var data;
+  await firebase.database().ref('/Books')
+      .on('value', snapshot => {
+        data = snapshot.val();
+        // console.log(data);
+        const books = _.map(data , (val,uid) =>{
+          return {...val , uid};
+        });
+        console.log(books);
+        setBooksData(books);
+      });
 
-const LineDivider = () => {
-  return (
-    <View style={{ width: 1, paddingVertical: 18 }}>
-      <View
-        style={{
-          flex: 1,
-          borderLeftColor: COLORS.lightGray,
-          borderLeftWidth: 1,
-        }}
-      ></View>
-    </View>
-  );
-};
+  
+}
 
-const Home = ({ navigation }) => {
+const Home = ({navigation }) => {
   const profileData = {
     name: "Username",
   };
+
+  const [BooksData, setBooksData] = React.useState({});
+    // var BooksData ;
+
+  useEffect(()=>{
+    // console.log(booksFetch());
+    booksFetch(setBooksData);
+
+    const listener = navigation.addListener(
+      'didFocus',()=>{
+        booksFetch(setBooksData);
+        
+      }
+    )
+    // return ()=>{listener.remove()};
+  } , []);
 
   const bookOtherWordsForHome = {
     id: 1,
@@ -105,11 +137,6 @@ const Home = ({ navigation }) => {
       categoryName: "Best Seller",
       books: [bookOtherWordsForHome, bookTheMetropolis, bookTheTinyDragon],
     },
-    {
-      id: 2,
-      categoryName: "The Latest",
-      books: [bookTheMetropolis],
-    },
   ];
 
   const [profile, setProfile] = React.useState(profileData);
@@ -119,6 +146,19 @@ const Home = ({ navigation }) => {
   const [searchTerm, setSearchTerm] = React.useState('');
 
   const onChange = (e) => {
+    for(var book in BooksData)
+    {
+      console.log('hi');
+      // console.log(BooksData[book].bookName );
+      console.log(e.nativeEvent.text);
+        if(BooksData[book].bookName === e.nativeEvent.text)
+        {
+            setSearchTerm('');
+            navigation.navigate("BookDetail", {
+              book: BooksData[book],
+            })
+        }
+    }
     setSearchTerm(e?.nativeEvent?.text)
   }
   const onSearchClear = () => setSearchTerm('');
@@ -139,11 +179,11 @@ const Home = ({ navigation }) => {
               onPress={() => navigation.navigate('Profile')}
             >
           <View style={{ marginRight: SIZES.padding , alignItems: "center", }}>
-            <Text style={{ ...FONTS.h3, color: COLORS.white }}>
+            {/* <Text style={{ ...FONTS.h3, color: COLORS.white }}>
               Good Morning
-            </Text>
+            </Text> */}
             <Text style={{ ...FONTS.h2, color: COLORS.white }}>
-              {profile.name}
+              Books App
             </Text>  
           </View>
           </TouchableOpacity>
@@ -151,129 +191,6 @@ const Home = ({ navigation }) => {
       </View>
     );
   }
-
-  function renderButtonSection() {
-    return (
-      <View
-        style={{ flex: 1, justifyContent: "center", padding: SIZES.padding }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            height: 70,
-            backgroundColor: COLORS.secondary,
-            borderRadius: SIZES.radius,
-          }}
-        >
-          {/* Claim */}
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => console.log("Claim")}
-          >
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Image
-                source={icons.claim_icon}
-                resizeMode="contain"
-                style={{
-                  width: 20,
-                  height: 20,
-                }}
-              />
-              <Text
-                style={{
-                  marginLeft: SIZES.base,
-                  ...FONTS.body4,
-                  color: COLORS.white,
-                }}
-              >
-                Claim
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          {/* Divider */}
-          <LineDivider />
-
-          {/* Get Point */}
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => console.log("Get Point")}
-          >
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Image
-                source={icons.point_icon}
-                resizeMode="contain"
-                style={{
-                  width: 20,
-                  height: 20,
-                }}
-              />
-              <Text
-                style={{
-                  marginLeft: SIZES.base,
-                  ...FONTS.body4,
-                  color: COLORS.white,
-                }}
-              >
-                Get Point
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          {/* Divider */}
-          <LineDivider />
-
-          {/* My Card */}
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => console.log("My Card")}
-          >
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Image
-                source={icons.card_icon}
-                resizeMode="contain"
-                style={{
-                  width: 20,
-                  height: 20,
-                }}
-              />
-              <Text
-                style={{
-                  marginLeft: SIZES.base,
-                  ...FONTS.body4,
-                  color: COLORS.white,
-                }}
-              >
-                My Card
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-
   function renderMyBookSection(myBooks) {
     const renderItem = ({ item, index }) => {
       return (
@@ -323,7 +240,7 @@ const Home = ({ navigation }) => {
           <FlatList
             data={myBooks}
             renderItem={renderItem}
-            keyExtractor={(item) => `${item.id}`}
+            keyExtractor={(item) => `${item.bookName}`}
             horizontal
             showsHorizontalScrollIndicator={false}
           />
@@ -390,7 +307,7 @@ const Home = ({ navigation }) => {
           >
             {/* Book Cover */}
             <Image
-              source={item.bookCover}
+              source={images.theMetropolist}
               resizeMode="cover"
               style={{ width: 100, height: 150, borderRadius: 10 }}
             />
@@ -437,7 +354,7 @@ const Home = ({ navigation }) => {
 
               {/* Genre */}
               <View style={{ flexDirection: "row", marginTop: SIZES.base }}>
-                {item.genre.includes("Adventure") && (
+                {item.genre[0] && (
                   <View
                     style={{
                       justifyContent: "center",
@@ -450,11 +367,11 @@ const Home = ({ navigation }) => {
                     }}
                   >
                     <Text style={{ ...FONTS.body4, color: COLORS.lightGreen }}>
-                      Adventure
+                      {item.genre[0]}
                     </Text>
                   </View>
                 )}
-                {item.genre.includes("Romance") && (
+                {item.genre[1] && (
                   <View
                     style={{
                       justifyContent: "center",
@@ -467,11 +384,11 @@ const Home = ({ navigation }) => {
                     }}
                   >
                     <Text style={{ ...FONTS.body4, color: COLORS.lightRed }}>
-                      Romance
+                      {item.genre[1]}
                     </Text>
                   </View>
                 )}
-                {item.genre.includes("Drama") && (
+                {item.genre[2] && (
                   <View
                     style={{
                       justifyContent: "center",
@@ -484,7 +401,7 @@ const Home = ({ navigation }) => {
                     }}
                   >
                     <Text style={{ ...FONTS.body4, color: COLORS.lightBlue }}>
-                      Drama
+                      {item.genre[2]}
                     </Text>
                   </View>
                 )}
@@ -500,9 +417,9 @@ const Home = ({ navigation }) => {
         style={{ flex: 1, marginTop: SIZES.radius, paddingLeft: SIZES.padding }}
       >
         <FlatList
-          data={books}
+          data={BooksData}
           renderItem={renderItem}
-          keyExtractor={(item) => `${item.id}`}
+          keyExtractor={(item) => `${item.bookName}`}
           showsVerticalScrollIndicator={false}
         />
       </View>

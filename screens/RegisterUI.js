@@ -5,7 +5,7 @@ import {
   Text,
   View,
   Image,
-  KeyboardAvoidingView,
+  TouchableOpacity,
 } from "react-native";
 import { COLORS, FONTS, SIZES, icons, images } from "../constants";
 import RegisterForm from "../components/RegisterForm";
@@ -16,7 +16,7 @@ export default class LoginUI extends Component {
         <View
           style={{
             alignItems: "center",
-            paddingVertical: SIZES.padding2,
+            paddingVertical: 25,
           }}
         >
           <Text style={{ ...FONTS.h1, color: COLORS.white }}>Sign Up</Text>
@@ -24,7 +24,23 @@ export default class LoginUI extends Component {
         <View styles={styles.artContainer}>
           <Image source={images.otherWordsForHome} style={styles.logo} />
         </View>
-        <RegisterForm></RegisterForm>
+        <RegisterForm 
+          st = {this.props.st} 
+          setst = {this.props.setst} 
+          but = {this.props.but} >
+        </RegisterForm>
+        <TouchableOpacity onPress = {()=>{this.props.setst({register : false})}}>
+          <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.white,
+                // paddingVertical: SIZES.padding2,
+                alignSelf: "center",
+              }}
+            >
+              Login Existing User
+            </Text>
+          </TouchableOpacity>
       </SafeAreaView>
     );
   }
@@ -37,8 +53,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 200,
-    height: 300,
+    width: 180,
+    height: 240,
     borderRadius: 10,
     alignSelf: "center",
   },

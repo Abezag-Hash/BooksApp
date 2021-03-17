@@ -51,7 +51,7 @@ class LogIn extends Component{
         const db = firebase.app().database();
         
         db.ref('/Books').push({
-            email : this.props.email,
+            email : this.props.route.params['email'],
             bookName : bookName,
             rating : rating,
             language : language,
@@ -61,10 +61,10 @@ class LogIn extends Component{
             description : description,
         });
 
-        // console.log('Done');
-        // console.log(this.props.route.params['email']);
-        this.props.changeState({addBookPage : false});
-
+        // console.log(this.props);
+        // console.log(this.props.route.params.email);
+        // this.props.changeState({addBookPage : false});
+        this.props.navigation.pop();
     }
     render()  {
         return(

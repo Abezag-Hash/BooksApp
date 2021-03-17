@@ -11,6 +11,8 @@ export default class LoginForm extends Component {
           placeholder="Username"
           style={styles.input}
           returnKeyType="next"
+          value={this.props.st.signName}
+          onChangeText={(text) => this.props.setst({ signName: text })}
           onSubmitEditing={() => this.emailInput.focus()}
         />
         <TextInput
@@ -19,6 +21,8 @@ export default class LoginForm extends Component {
           returnKeyType="next"
           keyboardType="email-address"
           ref={(input) => (this.emailInput = input)}
+          value={this.props.st.signEmail}
+          onChangeText={(text) => this.props.setst({ signEmail: text })}
           onSubmitEditing={() => this.phoneInput.focus()}
         />
         <TextInput
@@ -26,6 +30,8 @@ export default class LoginForm extends Component {
           style={styles.input}
           returnKeyType="next"
           ref={(input) => (this.phoneInput = input)}
+          value={this.props.st.signPhone}
+          onChangeText={(text) => this.props.setst({ signPhone: text })}
           onSubmitEditing={() => this.passwordInput.focus()}
         />
         <TextInput
@@ -34,16 +40,11 @@ export default class LoginForm extends Component {
           secureTextEntry
           returnKeyType="next"
           ref={(input) => (this.passwordInput = input)}
+          value={this.props.st.signPassword}
+          onChangeText={(text) => this.props.setst({ signPassword: text })}
           onSubmitEditing={() => this.confpasswordInput.focus()}
         />
-        <TextInput
-          placeholder=" Confirm Password"
-          style={styles.input}
-          returnKeyType="go"
-          secureTextEntry
-          ref={(input) => (this.confpasswordInput = input)}
-        />
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonContainer} onPress = {this.props.but} >
           <Text style={styles.buttontext}>Sign Up</Text>
         </TouchableOpacity>
       </View>

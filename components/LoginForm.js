@@ -7,13 +7,22 @@ export default class LoginForm extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput placeholder="Username" style={styles.input} />
+        <TextInput 
+          placeholder="Username" 
+          autoCorrect={false}
+          value={this.props.st.loginid}
+          onChangeText={(text) => this.props.setst({ loginid: text })}
+          style={styles.input} 
+        />
         <TextInput
           placeholder="Password"
+          autoCorrect={false}
           style={styles.input}
+          value={this.props.st.password}
+          onChangeText={(text) => this.props.setst({ password: text })}
           secureTextEntry
         />
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonContainer} onPress = {this.props.but}>
           <Text style={styles.buttontext}>Log In</Text>
         </TouchableOpacity>
       </View>
