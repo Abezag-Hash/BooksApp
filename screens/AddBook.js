@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
-import {View, TextInput , Button } from 'react-native';
-import { images } from "../constants";
+import {View, TextInput , Button, SafeAreaView, StyleSheet,} from 'react-native';
+import { COLORS, FONTS, SIZES, icons, images } from "../constants";
 import firebase from 'firebase';
 
 class LogIn extends Component{
@@ -60,75 +60,91 @@ class LogIn extends Component{
             genre : genre,
             description : description,
         });
-
-        // console.log(this.props);
-        // console.log(this.props.route.params.email);
-        // this.props.changeState({addBookPage : false});
         this.props.navigation.pop();
     }
     render()  {
         return(
-            <View>
-                <TextInput 
-                    placeholder="Name of the book"
-                    autoCorrect={false}
-                    style={{height:20,width:100}} 
-                    value = {this.state.loginid} 
-                    onChangeText={text => this.setState({bookName : text})}
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                />
-                <TextInput 
-                    placeholder="Rating"
-                    autoCorrect={false}
-                    style={{height:20,width:100}} 
-                    value = {this.state.loginid} 
-                    onChangeText={text => this.setState({rating : text})}
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                />
-                <TextInput 
-                    placeholder="Language"
-                    autoCorrect={false}
-                    style={{height:20,width:100}} 
-                    value = {this.state.loginid} 
-                    onChangeText={text => this.setState({language : text})}
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                />
-                <TextInput 
-                    placeholder="No of pages"
-                    autoCorrect={false}
-                    style={{height:20,width:100}} 
-                    value = {this.state.loginid} 
-                    onChangeText={text => this.setState({pageNo : text})}
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                />
-                <TextInput 
-                    placeholder="Author"
-                    autoCorrect={false}
-                    style={{height:20,width:100}} 
-                    value = {this.state.loginid} 
-                    onChangeText={text => this.setState({author : text})}
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                />
-                <TextInput 
-                    placeholder="Genre(Seperated by comma)"
-                    autoCorrect={false}
-                    style={{height:20,width:100}} 
-                    value = {this.state.loginid} 
-                    onChangeText={text => this.setState({strGenre : text})}
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                />
-                <TextInput 
-                    placeholder="Description"
-                    autoCorrect={false}
-                    style={{height:20,width:100}} 
-                    value = {this.state.loginid} 
-                    onChangeText={text => this.setState({description : text})}
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                />
-                <Button title="Confirm" onPress = {this.onButtonPress.bind(this)} />
-            </View>
+            <SafeAreaView style={styles.container}>
+                {/* <Text>hi</Text> */}
+                <View>
+                    <TextInput 
+                        placeholder="Name of the book"
+                        autoCorrect={false}
+                        style={styles.input} 
+                        value = {this.state.loginid} 
+                        onChangeText={text => this.setState({bookName : text})}
+                    />
+                    <TextInput 
+                        placeholder="Rating"
+                        autoCorrect={false}
+                        style={styles.input} 
+                        value = {this.state.loginid} 
+                        onChangeText={text => this.setState({rating : text})}
+                    />
+                    <TextInput 
+                        placeholder="Language"
+                        autoCorrect={false}
+                        style={styles.input} 
+                        value = {this.state.loginid} 
+                        onChangeText={text => this.setState({language : text})}
+                    />
+                    <TextInput 
+                        placeholder="No of pages"
+                        autoCorrect={false}
+                        style={styles.input} 
+                        value = {this.state.loginid} 
+                        onChangeText={text => this.setState({pageNo : text})}
+                    />
+                    <TextInput 
+                        placeholder="Author"
+                        autoCorrect={false}
+                        style={styles.input} 
+                        value = {this.state.loginid} 
+                        onChangeText={text => this.setState({author : text})}
+                    />
+                    <TextInput 
+                        placeholder="Genre(Seperated by comma)"
+                        autoCorrect={false}
+                        style={styles.input} 
+                        value = {this.state.loginid} 
+                        onChangeText={text => this.setState({strGenre : text})}
+                    />
+                    <TextInput 
+                        placeholder="Description"
+                        autoCorrect={false}
+                        style={styles.input} 
+                        value = {this.state.loginid} 
+                        onChangeText={text => this.setState({description : text})}
+                    />
+                    <Button title="Confirm" onPress = {this.onButtonPress.bind(this)} />
+                </View>
+            </SafeAreaView>
         )
     }
 }
 
 export default LogIn;
+
+const styles = StyleSheet.create({
+    container: {
+         padding: 20,
+         flex: 1,
+         backgroundColor : "black" ,
+         alignContent:"center",
+         justifyContent:"center",
+        },
+    input: {
+        height: 40,
+        backgroundColor: COLORS.lightGray,
+        marginBottom: 20,
+        color: "#fff",
+        paddingHorizontal: 10,
+        borderRadius: 15,
+      },
+    buttontext:{
+        color: "red",
+        fontSize:30,
+        // backgroundColor:"red",
+    }
+  });
+  

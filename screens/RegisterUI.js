@@ -34,7 +34,6 @@ export default class LoginUI extends Component {
               style={{
                 ...FONTS.body3,
                 color: COLORS.white,
-                // paddingVertical: SIZES.padding2,
                 alignSelf: "center",
               }}
             >

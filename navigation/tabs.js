@@ -79,8 +79,6 @@ const Tabs = () => {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      {/* <Tab.Screen name="Search" component={Home} />
-      <Tab.Screen name="Notification" component={ListUser} /> */}
       <Tab.Screen name="Setting" component={Login} />
     </Tab.Navigator>
   );

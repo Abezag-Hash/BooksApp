@@ -130,89 +130,9 @@ class LogIn extends Component {
             but={this.onSignUpButtonPress.bind(this)}>
               </RegisterUI>)
         }
-      // return (
-        // {this.state.register? : }
-        // <RegisterUI
-        //   st = {this.state} 
-        //   setst = {this.setState.bind(this)} 
-        //   but={this.onSignUpButtonPress.bind(this)}>
-        //     </RegisterUI>
-            // <LoginUI 
-          //   st = {this.state} 
-          //   setst = {this.setState.bind(this)} 
-          //   but={this.onButtonPress.bind(this)} >
-          // </LoginUI>
-        
-
-
-        // <View>
-        //   <TextInput
-        //     placeholder="email"
-        //     autoCorrect={false}
-        //     style={{ height: 20, width: 100 }}
-        //     value={this.state.loginid}
-        //     onChangeText={(text) => this.setState({ loginid: text })}
-        //     style={{ height: 40, borderColor: "white", borderWidth: 1 }}
-        //   />
-        //   <TextInput
-        //     secureTextEntry
-        //     placeholder="password"
-        //     autoCorrect={false}
-        //     style={{ height: 20, width: 100 }}
-        //     value={this.state.password}
-        //     onChangeText={(password) => this.setState({ password: password })}
-        //     style={{ height: 40, borderColor: "white", borderWidth: 1 }}
-        //   />
-        //   {this.renderButton()}
-        //   <Text>{this.state.error}</Text>
-        //   <TextInput
-        //     placeholder="Name"
-        //     autoCorrect={false}
-        //     style={{ height: 20, width: 100 }}
-        //     value={this.state.signName}
-        //     onChangeText={(text) => this.setState({ signName: text })}
-        //     style={{ height: 40, borderColor: "white", borderWidth: 1 }}
-        //   />
-        //   <TextInput
-        //     placeholder="Email"
-        //     autoCorrect={false}
-        //     style={{ height: 20, width: 100 }}
-        //     value={this.state.signEmail}
-        //     onChangeText={(text) => this.setState({ signEmail: text })}
-        //     style={{ height: 40, borderColor: "white", borderWidth: 1 }}
-        //   />
-        //   <TextInput
-        //     secureTextEntry
-        //     placeholder="Password"
-        //     autoCorrect={false}
-        //     style={{ height: 20, width: 100 }}
-        //     value={this.state.signPassword}
-        //     onChangeText={(text) => this.setState({ signPassword: text })}
-        //     style={{ height: 40, borderColor: "white", borderWidth: 1 }}
-        //   />
-        //   <TextInput
-        //     placeholder="Phone Number"
-        //     autoCorrect={false}
-        //     style={{ height: 20, width: 100 }}
-        //     value={this.state.signPhone}
-        //     onChangeText={(text) => this.setState({ signPhone: text })}
-        //     style={{ height: 40, borderColor: "white", borderWidth: 1 }}
-        //   />
-        //   <TextInput
-        //     placeholder="About"
-        //     autoCorrect={false}
-        //     style={{ height: 20, width: 100 }}
-        //     value={this.state.signAbout}
-        //     onChangeText={(text) => this.setState({ signAbout: text })}
-        //     style={{ height: 40, borderColor: "white", borderWidth: 1 }}
-        //   />
-        //   {this.signrenderButton()}
-        // </View>
-      // );
     }
   }
   render() {
-    // return <LoginUI></LoginUI>;
     return <View style = {{flex : 1}}>{this.renderContent()}</View>;
   }
 }
